@@ -31,7 +31,7 @@ void game_draw(Game *g) {
 
       // Draw the number on the cell.
       char text[MAX_NUMBER_LENGTH + 1];
-      snprintf(text, MAX_NUMBER_LENGTH, "%d", number);
+      snprintf(text, MAX_NUMBER_LENGTH + 1, "%d", number);
       Vector2 text_size = MeasureTextEx(config->display_font, text, config->display_font_size, 0);
       Vector2 text_pos = {
         (x + config->display_cell_size / 2) - (text_size.x / 2),
@@ -45,7 +45,7 @@ void game_draw(Game *g) {
   // Draw points.
   const int text_len = MAX_POINT_LENGTH + strlen("Points: ");
   char text[text_len + 1];
-  snprintf(text, text_len, "Points: %d", g->point);
+  snprintf(text, text_len + 1, "Points: %d", g->point);
   Vector2 text_size = MeasureTextEx(config->display_font, text, config->display_font_size, 0);
   Vector2 text_pos = {
     config->display_window_padding,
