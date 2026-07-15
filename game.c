@@ -22,6 +22,8 @@ GameConfig game_conf = {
     GOLD,
   },
 
+  .display_point_color = SKYBLUE,
+
   .display_cell_background_color = GRAY,
 
   .display_board_size = (float) 450,
@@ -113,8 +115,9 @@ void game_reverse_rows(Game *g) {
   }
 }
 
-void game_merge_row(int row[BOARD_SIZE]) {
+int game_merge_row(int row[BOARD_SIZE]) {
   int temp[BOARD_SIZE] = {0};
+  int points = 0;
   int idx = 0;
 
   for (int j = 0; j < BOARD_SIZE; j++) {
@@ -131,16 +134,19 @@ void game_merge_row(int row[BOARD_SIZE]) {
 
     if (j + 1 < BOARD_SIZE && temp[j] == temp[j + 1]) {
       row[idx++] = temp[j] + temp[j + 1];
+      points += temp[j] + temp[j + 1];
       j++;
     } else {
       row[idx++] = temp[j];
     }
   }
+
+  return points;
 }
 
 void game_merge_left(Game *g) {
   for (int i = 0; i < BOARD_SIZE; i++) {
-    game_merge_row(g->board[i]);
+    g->point += game_merge_row(g->board[i]);
   }
 }
 

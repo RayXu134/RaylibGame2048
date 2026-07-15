@@ -14,6 +14,7 @@
 #define WIN_HEIGHT 600
 
 #define MAX_NUMBER_LENGTH 10
+#define MAX_POINT_LENGTH 10
 #define GENERATE_2_CHANCE_PERCENT 90
 #define DISPLAY_FONT_COLORS_COUNT 11
 
@@ -25,6 +26,8 @@ typedef struct {
   char *display_font_name;
   int display_font_size;
   Color display_font_colors[DISPLAY_FONT_COLORS_COUNT];
+
+  Color display_point_color;
 
   Color display_cell_background_color;
   
@@ -54,7 +57,8 @@ void game_spawn_random(Game *g);
 bool game_check_game_over(Game *g);
 void game_transpose(Game *g);
 void game_reverse_rows(Game *g);
-void game_merge_row(int row[BOARD_SIZE]);
+// Return points that the user got in this row.
+int game_merge_row(int row[BOARD_SIZE]);
 void game_merge_left(Game *g);
 // Return true if the user made a move and changed the board.
 bool game_handle_move(Game *g, char dir);

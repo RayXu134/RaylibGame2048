@@ -1,6 +1,7 @@
 #include <raylib.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 #include <math.h>
 
@@ -40,6 +41,17 @@ void game_draw(Game *g) {
       DrawTextEx(config->display_font, text, text_pos, config->display_font_size, 0, text_color);
     }
   }
+
+  // Draw points.
+  const int text_len = MAX_POINT_LENGTH + strlen("Points: ");
+  char text[text_len + 1];
+  snprintf(text, text_len, "Points: %d", g->point);
+  Vector2 text_size = MeasureTextEx(config->display_font, text, config->display_font_size, 0);
+  Vector2 text_pos = {
+    config->display_window_padding,
+    WIN_HEIGHT - config->display_window_padding - text_size.y
+  };
+  DrawTextEx(config->display_font, text, text_pos, config->display_font_size, 0, config->display_point_color);
 }
 
 // ==============================
