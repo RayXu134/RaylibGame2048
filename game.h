@@ -19,6 +19,17 @@
 #define DISPLAY_FONT_COLORS_COUNT 11
 
 // ==============================
+// ===> Animations
+// ==============================
+
+typedef struct {
+  float progress;
+  int row, col;
+  // The animation is playing or not.
+  bool active;
+} SpawnAnim;
+
+// ==============================
 // ===> GameConfig
 // ==============================
 
@@ -33,6 +44,9 @@ typedef struct {
   
   float display_board_size;
   float display_cell_gap;
+
+  // Animation.
+  float anim_spawn_speed;
 
   // Auto set in game_init(), we don't need to specify these values.
   float display_window_padding;
@@ -49,6 +63,7 @@ extern GameConfig game_conf;
 typedef struct {
   int board[BOARD_SIZE][BOARD_SIZE];
   int point;
+  SpawnAnim spawn_anim;
   GameConfig config;
 } Game;
 

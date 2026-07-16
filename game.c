@@ -28,6 +28,8 @@ GameConfig game_conf = {
 
   .display_board_size = (float) 450,
   .display_cell_gap   = (float) 10,
+
+  .anim_spawn_speed = 5.0f,
 };
 
 void game_init(Game *g) {
@@ -58,6 +60,13 @@ void game_spawn_random(Game *g) {
     number = 4;
   }
   g->board[rand_y][rand_x] = number;
+
+  // Set the spawn animations.
+  g->spawn_anim = (SpawnAnim) {
+    .progress = 0.0f,
+    .row = rand_y, .col = rand_x,
+    .active = true
+  };
 }
 
 bool game_check_game_over(Game *g) {

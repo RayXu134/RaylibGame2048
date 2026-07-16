@@ -7,6 +7,12 @@
 
 #include "game.h"
 
+static float spawn_f(float t, float m) {
+  //const float L = m * (t - 1);
+  //return t * (L + 1);
+  return t * (m * (t - 1) + 1);
+}
+
 void game_draw(Game *g) {
   GameConfig *config = &g->config;
   for (int i = 0; i < BOARD_SIZE; i++) {
@@ -24,7 +30,19 @@ void game_draw(Game *g) {
       int y = config->display_window_padding +
         (i + 1) * config->display_cell_gap +
         i * config->display_cell_size;
-      DrawRectangle(x, y, config->display_cell_size, config->display_cell_size, background);
+
+      // Handle the spawn animation.
+      bool is_spawning =
+        g->spawn_anim.active &&
+        i == g->spawn_anim.row &&
+        j == g->spawn_anim.col;
+      float scale = is_spawning ? spawn_f(g->spawn_anim.progress, -2.0f) : 1.0f;
+      float sz = config->display_cell_size * scale;
+      // Center x, center y.
+      float cx = x + config->display_cell_size / 2;
+      float cy = y + config->display_cell_size / 2;
+
+      DrawRectangle(cx - sz / 2, cy - sz / 2, sz, sz, background);
 
       // When the number is 0, we don't want do display it.
       if (number == 0) continue;
@@ -77,6 +95,15 @@ int main() {
     ClearBackground(BLACK);
     game_draw(&g);
 
+    SpawnAnim *anim = &g.spawn_anim;
+    if (anim->active) {
+      anim->progress += GetFrameTime() * g.config.anim_spawn_speed;
+      if (anim->progress >= 1.0f) {
+        anim->progress = 1.0f;
+        anim->active = false;
+      }
+    }
+
     if (IsKeyPressed(KEY_Q)) {
       // Quit.
       break;
@@ -100,7 +127,6 @@ int main() {
     if (game_check_game_over(&g)) {
       break;
     }
-
 
     EndDrawing();
   }
